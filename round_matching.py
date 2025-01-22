@@ -103,25 +103,25 @@ def getHighestScoredRound(prev_used_pairings: list[Pairing], used_pairings_for_r
   emails_used = [email for pairing in used_pairings_for_round for email in [pairing["email1"], pairing["email2"]]]
 
   if len(used_pairings_for_round) * 2 == len(prefs):
-    print("all emails used")
+    # print("all emails used")
     return used_pairings_for_round, 0
   
-  print("\n\nemails_used")
-  pprint.pprint(emails_used)
-  print("prev_used_pairings")
-  pprint.pprint(prev_used_pairings)
+  # print("\n\nemails_used")
+  # pprint.pprint(emails_used)
+  # print("prev_used_pairings")
+  # pprint.pprint(prev_used_pairings)
   
   possible_pairings: list[Pairing] = [pairing for pairing in all_pairing_scores if not check_pairing_reuses_email(pairing, emails_used) and not check_pairing_prev_used(pairing, prev_used_pairings)]
-  print("possible_pairings")
+  # print("possible_pairings")
   pprint.pprint(possible_pairings)
   if len(possible_pairings) == 0:
-    print("no possible pairings")
+    # print("no possible pairings")
     return [], float('-inf')
   
   final_score = 0
   final_round_used: list[Pairing] = []
   for pairing in possible_pairings:
-    print("trying pairing", pairing)
+    # print("trying pairing", pairing)
     best_round_used, best_score = getHighestScoredRound(prev_used_pairings, used_pairings_for_round + [pairing], prefs, all_pairing_scores)
     best_score = best_score + pairing["comb_score"]
     if best_score > final_score:
