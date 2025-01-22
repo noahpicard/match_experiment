@@ -36,7 +36,7 @@ def readHeadingCSV(filepath):
   return dictRows
 
 def getDisplayName(email, prefs):
-  return f'{prefs[email]["first"]} {prefs[email]["last"][0]}'
+  return f'{prefs[email]["first"]} {prefs[email]["last"][0] if len(prefs[email]["last"]) > 0 else ""}'
 
 def check_valid_pair(email, pairing):
   return email in [pairing["email1"], pairing["email2"]]
@@ -46,7 +46,6 @@ def get_other_email(email, pairing):
 
 def get_other_pairing_email(email, round):
   search = [get_other_email(email, pairing) for pairing in round if check_valid_pair(email, pairing)]
-  print("\n\nsearch", search, email, round)
   return search[0]
 
 def writePairingsCSV(top_pairings, prefs, outfilepath):
@@ -63,13 +62,9 @@ def writePairingsCSV(top_pairings, prefs, outfilepath):
         "round " + str(i) + " score" for i in range(len(top_pairings))
       ])
     for email in prefs:
-
-      print(top_pairings)
-      print(top_pairings)
       pairing_res = [get_other_pairing_email(email, round) for round in top_pairings]
       pairing_res_names = [getDisplayName(pairing_email, prefs) for pairing_email in pairing_res]
       pairing_res_score = [["{:.2f}".format(pairing["comb_score"]) for pairing in round if email in [pairing["email1"], pairing["email2"]]][0] for round in top_pairings]
-      print("pairing_res", pairing_res, len(pairing_res))
       matchWriter.writerow([
           prefs[email]["first"],
           prefs[email]["last"],
@@ -94,9 +89,6 @@ def getPairings(prefs, round_count):
     round_pairings, _ = getHighestScoredRound(prev_used_pairings, [], prefs, all_pairing_scores)
     pairings.append(round_pairings)
     prev_used_pairings = prev_used_pairings + round_pairings
-
-  print("\n\npairings:")
-  pprint.pprint(pairings)
   return pairings
 
 
