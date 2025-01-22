@@ -1,0 +1,7 @@
+first,last,email,round 0,round 1,round 2,round 0 score,round 1 score,round 2 score
+Noah,Picard,noah@gmail.com,Mira B,Emma G,No one !,2.67,2.40,0.00
+Milo,Jemeny,milo@gmail.com,No one !,Mira B,Emma G,0.00,2.67,2.00
+Eric,Bennet,eric@gmail.com,Emma G,No one !,Mira B,2.67,0.00,2.86
+Emma,Gavlan,emma@gmail.com,Eric B,Noah P,Milo J,2.67,2.40,2.00
+Mira,Berfer,mira@gmail.com,Noah P,Milo J,Eric B,2.67,2.67,2.86
+No one,!,fake_woman_0,Milo J,Eric B,Noah P,0.00,0.00,0.00
