@@ -17,6 +17,8 @@ def getStraightPrefs(men_prefs, women_prefs):
   for women_email in women_prefs:
     prefs[women_email] = {**women_prefs[women_email], **{women_email2: -1 for women_email2 in women_prefs}}
 
+  print("rel lens",len(men_prefs), len(women_prefs))
+
   if (len(men_prefs) > len(women_prefs)):
     ## Add no ones as needed
     fake_woman_count = len(men_prefs) - len(women_prefs)
@@ -31,7 +33,7 @@ def getStraightPrefs(men_prefs, women_prefs):
     fake_man_count = len(women_prefs) - len(men_prefs)
     for i in range(fake_man_count):
       men_email = "fake_man_" + str(i)
-      prefs[women_email] = {"first": "No one", "last": "!", "email": men_email, **{other_email: 0 for other_email in prefs}}
+      prefs[men_email] = {"first": "No one", "last": "!", "email": men_email, **{other_email: 0 for other_email in prefs}}
       for pref in prefs:
         prefs[pref][men_email] = 0
   
@@ -39,6 +41,9 @@ def getStraightPrefs(men_prefs, women_prefs):
 
 
 def main(men_filepath, women_filepath, round_count):
+  import time
+  # record start time
+  start = time.time()
   men_prefs = round_matching.readHeadingCSV(men_filepath)
   women_prefs = round_matching.readHeadingCSV(women_filepath)
   prefs = getStraightPrefs(men_prefs, women_prefs)
@@ -52,16 +57,30 @@ def main(men_filepath, women_filepath, round_count):
   print("\n\nprefs")
   pprint.pprint(prefs)
 
-  pairings = round_matching.getPairings(prefs, round_count)
-  print("pairings", len(pairings))
-  pprint.pprint(pairings)
+  pairings = round_matching.getMIPPairings(prefs, round_count)
+
+  #pairings = round_matching.getPairings(prefs, round_count)
+  # print("pairings", len(pairings))
+  # pprint.pprint(pairings)
+
+  # pairings = round_matching.getGSPairings(men_prefs, women_prefs, round_count)
+  # print("GS pairings", len(pairings))
+  # pprint.pprint(pairings)
 
   top_pairings = pairings[:round_count]
   random.shuffle(top_pairings)
-  print("top pairings", len(top_pairings))
+  print("top pairings", len(top_pairings), [len(round) for round in top_pairings])
   pprint.pprint(top_pairings)
 
   round_matching.writePairingsCSV(top_pairings, prefs, round_matching.getGlobalFilepath("final_group_pairings.csv"))
+
+  # record end time
+  end = time.time()
+  
+  # print the difference between start 
+  # and end time in milli. secs
+  print("The time of execution of above program is :",
+        (end-start) * 10**3, "ms")
 
 if (__name__ == "__main__"):  
   men_filename = sys.argv[1]
