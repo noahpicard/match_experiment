@@ -293,6 +293,7 @@ def getMIPPairings(prefs, round_count):
       if len(round_pairings) != 0:
         pairings.append(round_pairings)
         all_pairing_scores = list(filter(lambda p: not any([pairing["email1"] == p["email1"] and pairing["email2"] == p["email2"] for pairing in round_pairings]), all_pairing_scores))
+        all_pairing_scores = list(filter(lambda p: not any([pairing["email1"] == p["email1"] and prefs[pairing["email2"]]["first"] == "No one" and prefs[pairing["email2"]]["first"] == prefs[p["email2"]]["first"] for pairing in round_pairings]), all_pairing_scores))
         print(" temp all_pairing_scores length -------", len(all_pairing_scores), all_pairing_scores[0], all_pairing_scores[-1])
         break
   return pairings
